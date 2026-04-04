@@ -5,6 +5,7 @@ import adminRoutes from "./route.js";
 import cloudinary from "cloudinary";
 import { errorHandler } from "./middleware/errorHandler.js";
 import redis from "redis";
+import cors from "cors";
 dotenv.config();
 cloudinary.v2.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -25,6 +26,7 @@ redisClient
 })
     .catch(console.error);
 const app = express();
+app.use(cors());
 app.use(express.json());
 async function initDB() {
     try {
