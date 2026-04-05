@@ -65,7 +65,11 @@ async function initDB() {
   }
 }
 
-app.use("/api/v1", adminRoutes);
+app.use("/api/v1/admin", adminRoutes);
+
+app.get("/", (req, res) => {
+  res.send("Admin service is running");
+});
 
 app.use(errorHandler);
 
