@@ -1,0 +1,9 @@
+services:
+  admin:
+    build: .
+    deploy:
+      replicas: 4
+    env_file:
+      - .env
+    ports:
+      - "7000-7003:7000"
