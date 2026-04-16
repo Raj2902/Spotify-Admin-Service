@@ -7,6 +7,7 @@ import cloudinary from "cloudinary";
 import { sql } from "./config/db.js";
 import { getAssetPublicId } from "./libs/helper.js";
 import { redisClient } from "./index.js";
+import { publishSongDeleted } from "./events/publishers/songDeleted.publisher.js";
 
 export const addAlbum = asyncHandler(
   async (req: authenticatedRequest, res: Response) => {
@@ -121,7 +122,9 @@ export const addThumbnail = asyncHandler(
       throw new AppError("Failed to generate file buffer", 500);
     }
 
-    const cloud = await cloudinary.v2.uploader.upload(fileBuffer.content);
+    const cloud = await cloudinary.v2.uploader.upload(fileBuffer.content, {
+      folder: "songs_thumbnail",
+    });
 
     const result = await sql`
     UPDATE songs SET thumbnail = ${cloud.secure_url} WHERE id = ${req.params.id} RETURNING *
@@ -194,22 +197,20 @@ export const deleteSong = asyncHandler(
       throw new AppError("No song with this id", 404);
     }
 
-    const public_id = getAssetPublicId(isSong[0]?.audio, "songs");
-
-    const { result } = await cloudinary.v2.uploader.destroy(public_id, {
-      resource_type: "video",
-    });
-
-    if (result && result === "not found")
-      throw new AppError("Asset in cloudinary not found", 404);
+    const audio_public_id = getAssetPublicId(isSong[0]?.audio, "songs");
+    const thumbnail_public_id = isSong[0]?.thumbnail
+      ? getAssetPublicId(isSong[0]?.thumbnail, "songs_thumbnail")
+      : null;
 
     await sql`DELETE FROM songs WHERE id = ${id}`;
+    if (audio_public_id)
+      await publishSongDeleted(audio_public_id, thumbnail_public_id);
 
     if (redisClient.isReady) {
       await redisClient.del("songs");
       console.log("Cache invalidated for songs");
     }
 
-    res.status(200).json({ message: "Song deleted Successfully" });
+    res.status(200).json({ message: "Song deleted. Cleanup in progress..." });
   },
 );
