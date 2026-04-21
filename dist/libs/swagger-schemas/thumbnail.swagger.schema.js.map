@@ -1,0 +1,1 @@
+{"version":3,"file":"thumbnail.swagger.schema.js","sourceRoot":"","sources":["../../../src/libs/swagger-schemas/thumbnail.swagger.schema.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,MAAM,+BAA+B,GAAG;IAC7C,IAAI,EAAE,QAAQ;IACd,QAAQ,EAAE,CAAC,MAAM,CAAC;IAClB,UAAU,EAAE;QACV,IAAI,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE,MAAM,EAAE,QAAQ,EAAE;KAC3C;CACF,CAAC"}
