@@ -68,6 +68,7 @@ async function initDB() {
     console.log("Error initDb ", error);
   }
 }
+initDB();
 
 app.use("/api/v1/admin", adminRoutes);
 
@@ -79,8 +80,6 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT;
 
-initDB().then(() => {
-  app.listen(7000, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
+app.listen(7000, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
