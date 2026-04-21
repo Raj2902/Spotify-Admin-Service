@@ -1,7 +1,7 @@
 import { asyncHandler } from "./middleware/asyncHandler.js";
 import { json } from "express";
 import { AppError } from "./utils/AppError.js";
-import getBuffer from "./config/dataUri.js";
+import getBuffer from "./config/data-uri.js";
 import cloudinary from "cloudinary";
 import { sql } from "./config/db.js";
 import { getAssetPublicId } from "./libs/helper.js";
