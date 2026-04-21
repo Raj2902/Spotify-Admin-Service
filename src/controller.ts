@@ -6,8 +6,8 @@ import getBuffer from "./config/data-uri.js";
 import cloudinary from "cloudinary";
 import { sql } from "./config/db.js";
 import { getAssetPublicId } from "./libs/helper.js";
-import { redisClient } from "./index.js";
 import { publishSongDeleted } from "./events/publishers/songDeleted.publisher.js";
+import { redisClient } from "./config/redis.js";
 
 export const addAlbum = asyncHandler(
   async (req: authenticatedRequest, res: Response) => {

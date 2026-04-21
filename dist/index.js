@@ -4,24 +4,16 @@ import { sql } from "./config/db.js";
 import adminRoutes from "./route.js";
 import cloudinary from "cloudinary";
 import { errorHandler } from "./middleware/errorHandler.js";
-import redis from "redis";
 import cors from "cors";
 import { swaggerOptions } from "./libs/swagger.js";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import { redisClient } from "./config/redis.js";
 dotenv.config();
 cloudinary.v2.config({
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.CLOUD_API_KEY,
     api_secret: process.env.CLOUD_API_SECRET,
-});
-export const redisClient = redis.createClient({
-    username: "default",
-    password: process.env.REDIS_PASS,
-    socket: {
-        host: "redis-17741.c301.ap-south-1-1.ec2.cloud.redislabs.com",
-        port: 17741,
-    },
 });
 redisClient.on("error", (err) => console.log("Redis Client Error", err));
 await redisClient.connect();
