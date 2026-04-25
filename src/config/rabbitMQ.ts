@@ -2,7 +2,7 @@ import amqplib from "amqplib";
 
 let channel: amqplib.Channel | null = null;
 
-async function init() {
+export async function initRabbitMQ() {
   const conn = await amqplib.connect(`${process.env.RABBITMQ_URL}`);
   channel = await conn.createChannel();
   if (channel) {
@@ -13,6 +13,5 @@ async function init() {
     durable: true,
   });
 }
-init();
 
 export const getChannel = () => channel;

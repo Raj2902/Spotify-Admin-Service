@@ -9,6 +9,7 @@ import { swaggerOptions } from "./libs/swagger.js";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { redisClient } from "./config/redis.js";
+import { initRabbitMQ } from "./config/rabbitMQ.js";
 
 dotenv.config();
 
@@ -21,6 +22,8 @@ cloudinary.v2.config({
 redisClient.on("error", (err) => console.log("Redis Client Error", err));
 
 await redisClient.connect();
+
+await initRabbitMQ();
 
 const app = express();
 
